@@ -29,7 +29,7 @@ object pepe {
     }
 
 	method sueldo() {
-        return categoria.sueldoNeto() + bonoPorResultados.monto(self) + bonoPorPresentismo.monto(self)
+        return self.sueldoNeto() + bonoPorResultados.monto(self) + bonoPorPresentismo.monto(self)
     }
 
     method sueldoNeto() {
