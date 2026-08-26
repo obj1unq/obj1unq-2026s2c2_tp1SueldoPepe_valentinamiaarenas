@@ -1,82 +1,93 @@
 object pepe {
     var categoria = gerente
-    var bonoResultado = bonoNulo
-    var presentismo = bonoPresentismoNulo
-    var faltasActuales = 0
+    var bonoPorResultados = bonoNulo
+    var bonoPorPresentismo = bonoPresentismoNulo
+    var faltas = 0
     
     method categoria(_categoria) {
         categoria = _categoria
     }
 
-    method bonoResultado(_bonoResultado) {
-        bonoResultado = _bonoResultado
+    method categoria() {
+        return categoria
     }
 
-    method presentismo(_presentismo) {
-        presentismo = _presentismo
+    method bonoPorResultados(_bonoPorResultados) {
+        bonoPorResultados = _bonoPorResultados
     }
 
-    method faltasActuales(_faltasActuales) {
-        faltasActuales = _faltasActuales
+    method bonoPorPresentismo(_bonoPorPresentismo) {
+        bonoPorPresentismo = _bonoPorPresentismo
+    }
+
+    method faltas(_faltas) {
+        faltas = _faltas
     }
 
     method faltas() {
-        return faltasActuales
+        return faltas
     }
 
 	method sueldo() {
-        return categoria.sueldoNeto() + bonoResultado.bono(self) + presentismo.bonoPresentismo(self)
+        return categoria.sueldoNeto() + bonoPorResultados.monto(self) + bonoPorPresentismo.monto(self)
     }
 
     method sueldoNeto() {
         return categoria.sueldoNeto()
     }
 
-    method bono() {
-        return bonoResultado.bono()
+    method bonoPorResultado() {
+        return bonoPorResultados.monto()
     }
 
-    method bonoPresentismo() {
-        return presentismo.bonoPresentismo()
+    method bonoPorPresentismo() {
+        return bonoPorPresentismo.monto()
     }
 }
 
 object moria {
     var categoria = cadete
-    var bonoResultado = bonoNulo
+    var bonoPorResultados = bonoNulo
 
     method categoria(_categoria) {
         categoria = _categoria
     }
 
-    method bonoResultado(_bonoResultado) {
-        bonoResultado = _bonoResultado
+    method categoria() {
+        return categoria
+    }
+
+    method bonoPorResultados(_bonoPorResultados) {
+        bonoPorResultados = _bonoPorResultados
     }
 
     method sueldo() {
-        return self.sueldoNeto() + bonoResultado.bono(self)
+        return self.sueldoNeto() + bonoPorResultados.monto(self)
     }
 
     method sueldoNeto() {
         return categoria.sueldoNeto() * 1.3
     }
-
 }
 
 object roque {
-    var neto = 28000
-    var bonoResultado = bonoNulo
+    var neto = 28000 //Asumo que puede variar porque no se comenta que sea un neto fijo
+    var bonoPorResultados = bonoNulo
 
     method sueldo() {
-        return self.sueldoNeto() + bonoResultado.bono(self) + neto
+        return self.sueldoNeto() + bonoPorResultados.monto(self) + 9000
     }
 
     method sueldoNeto() {
         return neto
     }
 
-    method bonoResultado(_bonoResultado) {
-        bonoResultado = _bonoResultado
+    method bonoPorResultados(_bonoPorResultados) {
+        bonoPorResultados = _bonoPorResultados
+    }
+
+    method bonoPorResultados() {
+        return bonoPorResultados
     }
 
     method neto(_neto) {
@@ -86,10 +97,11 @@ object roque {
 
 object ernesto {
     var compañero = moria
-    var presentismo = normal
-    
+    var bonoPorPresentismo = normal
+    const faltas = 0
+
     method sueldo() {
-        return self.sueldoNeto() + presentismo.bonoPresentismo(0)
+        return self.sueldoNeto() + bonoPorPresentismo.monto(self)
     }
 
     method sueldoNeto() {
@@ -100,8 +112,16 @@ object ernesto {
         compañero = _compañero
     }
 
-    method presentismo(_presentismo) {
-        presentismo = _presentismo
+    method compañero() {
+        return compañero
+    }
+
+    method bonoPorPresentismo(_bonoPorPresentismo) {
+        bonoPorPresentismo = _bonoPorPresentismo
+    }
+
+    method faltas() {
+        return faltas
     }
 }
 
@@ -118,25 +138,25 @@ object cadete {
 }
 
 object porcentaje {
-    method bono(empleado) {
+    method monto(empleado) {
         return empleado.sueldoNeto() * 0.1
     }
 }
 
 object montoFijo {
-    method bono(empleado) {
+    method monto(empleado) {
         return 800
     }
 }
 
 object bonoNulo {
-    method bono(empleado) {
+    method monto(empleado) {
         return 0
     }
 }
 
 object normal {
-    method bonoPresentismo(empleado) {
+    method monto(empleado) {
         if (empleado.faltas() == 0) {
             return 2000
         } else if (empleado.faltas() == 1) {
@@ -148,7 +168,7 @@ object normal {
 }
 
 object ajuste {
-    method bonoPresentismo(empleado) {
+    method monto(empleado) {
         if (empleado.faltas() == 0) {
             return 100
         } else {
@@ -158,7 +178,7 @@ object ajuste {
 }
 
 object demagogico {
-    method bonoPresentismo(empleado) {
+    method monto(empleado) {
         if (empleado.sueldoNeto() < 18000) {
             return 500
         } else {
@@ -168,7 +188,7 @@ object demagogico {
 }
 
 object bonoPresentismoNulo {
-    method bonoPresentismo(empleado) {
+    method monto(empleado) {
         return 0
     }
 }
@@ -194,9 +214,9 @@ object vendedor {
 }
 
 object medioTiempo {
-    var categoria = ""
+    var categoria = gerente
 
-    method categiriaBase(_categoria) {
+    method categoria(_categoria) { 
         categoria = _categoria
     }
     method sueldoNeto() {
